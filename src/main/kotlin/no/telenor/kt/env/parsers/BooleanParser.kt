@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package no.telenor.kt.env.parsers
 
 import no.telenor.kt.env.Parser
