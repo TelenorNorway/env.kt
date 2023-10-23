@@ -8,7 +8,7 @@ import kotlin.reflect.KType
 class BooleanParser : Parser {
 	fun parseBoolean(type: KType, name: String, value: String): Boolean {
 		val v = value.trim().lowercase()
-		return values[v] ?: throw Throwable("Could not convert $name to a Boolean, value '$v' is not a boolean token!");
+		return values[v] ?: throw Throwable("Could not convert $name to a Boolean, value '$v' is not a boolean token!")
 	}
 
 	companion object {
@@ -32,6 +32,6 @@ class BooleanParser : Parser {
 			"disabled" to false,
 			"inactive" to false,
 			"unactivated" to false,
-		);
+		)
 	}
 }
