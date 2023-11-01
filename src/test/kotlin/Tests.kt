@@ -1,12 +1,9 @@
-import no.telenor.kt.EnvironmentSnapshot
-import no.telenor.kt.clearEnv
 import no.telenor.kt.env.Env
 import no.telenor.kt.env.EnvConstructor
+import no.telenor.kt.env.Environment
+import no.telenor.kt.env.EnvironmentSnapshot
 import no.telenor.kt.env.ListEnv
 import no.telenor.kt.env.construct
-import no.telenor.kt.envSnapshot
-import no.telenor.kt.restoreEnv
-import no.telenor.kt.setenv
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -24,20 +21,19 @@ class Tests {
 
 	@BeforeTest
 	fun saveSnapshot() {
-		snapshot = envSnapshot()
-		clearEnv()
+		snapshot = Environment.clear()
 	}
 
 	@AfterTest
 	fun restoreSnapshot() {
-		snapshot?.let { restoreEnv(it) }
+		snapshot?.let { Environment.restore(it) }
 	}
 
 	// endregion
 
 	@Test
 	fun `construct simple data class`() {
-		setenv(
+		Environment.set(
 			"TEST_INT" to "123",
 			"TEST_NUMBERS" to "1.2;3.4;5.6;7.8"
 		)
