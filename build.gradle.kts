@@ -9,7 +9,7 @@ version = versioning.environment()
 
 repositories {
 	mavenCentral()
-	git.hub("telenornorgeinternal", "abc123")
+	git.hub("telenornorway")
 }
 
 dependencies {
