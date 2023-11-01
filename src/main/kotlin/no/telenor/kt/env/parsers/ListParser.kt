@@ -10,11 +10,9 @@ class ListParser : Parser {
 		val arrayEnvAnnot: ListEnv? = type.annotations.find { it is ListEnv } as ListEnv?
 
 		val separator = arrayEnvAnnot?.separator ?: ","
-		// val regex = arrayEnvAnnot?.regex ?: false
-
-		val itemType = type.arguments[0].type ?: throw Throwable("Could not detect list item type")
-		// val items = if (regex) value.split(Regex(separator)) else value.split(separator)
-		val items = value.split(separator)
+		
+		val itemType = type.arguments.getOrNull(0)?.type ?: throw Throwable("Could not detect list item type")
+		val items = if (arrayEnvAnnot?.regex == true) value.split(Regex(separator)) else value.split(separator)
 		val outputs = mutableListOf<Any?>()
 
 		for (n in items.indices) outputs.add(parseValue(itemType, "$name#$n", items[n]))

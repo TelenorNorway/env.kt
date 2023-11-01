@@ -20,7 +20,7 @@ enum class Lol {
 
 data class TestClass @EnvConstructor(prefix = "TEST_") constructor(
 	@Env val int: Int,
-	@Env val numbers: @ListEnv(separator = ";") List<@ListEnv(separator = ".") List<Int>>,
+	@Env val numbers: @ListEnv(separator = ";", regex = false) List<@ListEnv(separator = ".", regex = false) List<Int>>,
 	@Env val lol: Lol,
 	@Env val map1: Map<String, String>,
 	@Env val map2: @MapEnv(eq = ":", eqRegex = false, separator = ",", separatorRegex = false) Map<String, String>,
@@ -30,6 +30,7 @@ data class TestClass @EnvConstructor(prefix = "TEST_") constructor(
 		separator = "[\\s\\r\\n]+",
 		separatorRegex = true
 	) Map<String, String>,
+	@Env val list: @ListEnv(separator = "[\\s\\r\\n\\t]+", regex = true) List<Int>,
 )
 
 class Tests {
@@ -58,6 +59,7 @@ class Tests {
 			"TEST_MAP1" to "john=doe;foo=bar=baz",
 			"TEST_MAP2" to "john:doe,foo:bar:baz",
 			"TEST_MAP3" to "john=doe foo=bar=baz\r\nthis=is=cool",
+			"TEST_LIST" to "1 2 3 4"
 		)
 		val derived = try {
 			construct<TestClass>()
@@ -70,6 +72,7 @@ class Tests {
 		assertEquals(derived.map1, mapOf("john" to "doe", "foo" to "bar=baz"))
 		assertEquals(derived.map2, mapOf("john" to "doe", "foo" to "bar:baz"))
 		assertEquals(derived.map3, mapOf("john" to "doe", "foo" to "bar=baz", "this" to "is=cool"))
+		assertEquals(derived.list, listOf(1, 2, 3, 4))
 	}
 
 }
