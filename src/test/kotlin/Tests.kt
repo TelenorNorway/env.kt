@@ -9,9 +9,16 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+enum class Lol {
+	Foo,
+	Bar,
+	Baz
+}
+
 data class TestClass @EnvConstructor(prefix = "TEST_") constructor(
 	@Env val int: Int,
-	@Env val numbers: @ListEnv(separator = ";") List<@ListEnv(separator = ".") List<Int>>
+	@Env val numbers: @ListEnv(separator = ";") List<@ListEnv(separator = ".") List<Int>>,
+	@Env val lol: Lol,
 )
 
 class Tests {
@@ -35,7 +42,8 @@ class Tests {
 	fun `construct simple data class`() {
 		Environment.set(
 			"TEST_INT" to "123",
-			"TEST_NUMBERS" to "1.2;3.4;5.6;7.8"
+			"TEST_NUMBERS" to "1.2;3.4;5.6;7.8",
+			"TEST_LOL" to "Foo"
 		)
 		val derived = construct<TestClass>()
 		assertEquals(derived.int, 123)
