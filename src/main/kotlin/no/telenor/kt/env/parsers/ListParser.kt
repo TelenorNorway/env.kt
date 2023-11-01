@@ -12,7 +12,7 @@ class ListParser : Parser {
 		val separator = arrayEnvAnnot?.separator ?: ","
 		// val regex = arrayEnvAnnot?.regex ?: false
 
-		val itemType = type.arguments[0].type ?: throw Throwable("Could not detect array item type")
+		val itemType = type.arguments[0].type ?: throw Throwable("Could not detect list item type")
 		// val items = if (regex) value.split(Regex(separator)) else value.split(separator)
 		val items = value.split(separator)
 		val outputs = mutableListOf<Any?>()
