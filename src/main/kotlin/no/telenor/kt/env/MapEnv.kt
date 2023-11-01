@@ -1,9 +1,17 @@
 package no.telenor.kt.env
 
+/**
+ * Note, default parameters are not allowed in Java, but they are in Kotlin. Something is screwed up somewhere.
+ *
+ * Define all parameters when using.
+ *
+ * https://youtrack.jetbrains.com/issue/IDEA-320939/Unexpected-and-unmodifiable-background-color-on-line-where-cursor-is
+ */
 @Target(AnnotationTarget.TYPE)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class MapEnv(
-	/** Separates key and value */
 	val eq: String = "=",
-	/** Separates key1=value1 key2=value2 */
+	val eqRegex: Boolean = false,
 	val separator: String = ";",
+	val separatorRegex: Boolean = false,
 )
