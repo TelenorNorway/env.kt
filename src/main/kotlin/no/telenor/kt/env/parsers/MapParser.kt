@@ -1,8 +1,8 @@
 package no.telenor.kt.env.parsers
 
+import no.telenor.kt.env.Construct
 import no.telenor.kt.env.MapEnv
 import no.telenor.kt.env.Parser
-import no.telenor.kt.env.parseValue
 import kotlin.reflect.KType
 
 class MapParser : Parser {
@@ -34,7 +34,8 @@ class MapParser : Parser {
 			val arr = eqSplit(keyValuePairs[n])
 			val key = arr.getOrNull(0) ?: continue
 			val str = arr.getOrNull(1) ?: ""
-			outputs[parseValue(keyType, "$name[$n#key]", key)] = parseValue(valueType, "$name[$key:$n#value]", str)
+			outputs[Construct.parseValue(keyType, "$name[$n#key]", key)] =
+				Construct.parseValue(valueType, "$name[$key:$n#value]", str)
 		}
 
 		return outputs
