@@ -1,4 +1,5 @@
 import no.telenor.kt.env.BigEnvConstructException
+import no.telenor.kt.env.Construct
 import no.telenor.kt.env.Env
 import no.telenor.kt.env.EnvConstructException
 import no.telenor.kt.env.EnvConstructor
@@ -6,7 +7,6 @@ import no.telenor.kt.env.Environment
 import no.telenor.kt.env.EnvironmentSnapshot
 import no.telenor.kt.env.ListEnv
 import no.telenor.kt.env.MapEnv
-import no.telenor.kt.env.construct
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -62,7 +62,7 @@ class Tests {
 			"TEST_LIST" to "1 2 3 4"
 		)
 		val derived = try {
-			construct<TestClass>()
+			Construct.from<TestClass>()
 		} catch (ex: EnvConstructException) {
 			throw BigEnvConstructException(ex)
 		}
