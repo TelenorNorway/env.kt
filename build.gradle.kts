@@ -15,7 +15,7 @@ repositories {
 dependencies {
 	implementation(kotlin("reflect"))
 	testImplementation(kotlin("test"))
-	testImplementation("no.telenor.kt:setenv:2.0.1")
+	testImplementation("no.telenor.kt:setenv:2.0.2")
 }
 
 tasks.test {
