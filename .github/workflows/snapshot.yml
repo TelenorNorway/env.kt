@@ -37,6 +37,12 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Build
+        env:
+          VERSION: ${{ needs.versioning.outputs.version }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: ./gradlew build
       - name: Release (packages)
         env:
           VERSION: ${{ needs.versioning.outputs.version }}
