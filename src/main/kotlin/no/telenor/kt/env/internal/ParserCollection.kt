@@ -15,6 +15,17 @@ private fun classToParserFunctions(cls: Class<*>): Map<KClass<*>, ParserFn> {
 	val kClass = cls.kotlin
 	if (kClass.visibility != KVisibility.PUBLIC || kClass.typeParameters.isNotEmpty()) return emptyMap()
 	val functions = kClass.memberFunctions.map {
+		debug("")
+		debug("Checking function $it ($kClass)")
+		debug("it.visibility == KVisibility.PUBLIC = ${it.visibility == KVisibility.PUBLIC}")
+		debug("it.name == \"parse${it.returnType.jvmErasure.simpleName}\" = ${it.name == "parse${it.returnType.jvmErasure.simpleName}"}")
+		debug("it.typeParameters.isEmpty() = ${it.typeParameters.isEmpty()}")
+		debug("!it.returnType.isMarkedNullable = ${!it.returnType.isMarkedNullable}")
+		debug("it.parameters.size == 4 = ${it.parameters.size == 4}")
+		debug("!it.parameters[0].isOptional && it.parameters[0].kind == KParameter.Kind.INSTANCE = ${!it.parameters[0].isOptional && it.parameters[0].kind == KParameter.Kind.INSTANCE}")
+		debug("!it.parameters[1].isOptional && it.parameters[1].type.jvmErasure == KType::class = ${!it.parameters[1].isOptional && it.parameters[1].type.jvmErasure == KType::class}")
+		debug("!it.parameters[2].isOptional && it.parameters[2].type.jvmErasure == String::class = ${!it.parameters[2].isOptional && it.parameters[2].type.jvmErasure == String::class}")
+		debug("!it.parameters[3].isOptional && it.parameters[3].type.jvmErasure == String::class = ${!it.parameters[3].isOptional && it.parameters[3].type.jvmErasure == String::class}")
 		if (!(
 				it.visibility == KVisibility.PUBLIC &&
 					it.name == "parse${it.returnType.jvmErasure.simpleName}" &&
@@ -62,6 +73,7 @@ internal object ParserCollection {
 
 	fun scan(classLoader: ClassLoader) {
 		for (url in classLoader.getResources("META-INF/services/no.telenor.kt.env.Parser")) {
+			debug("Scanning $url")
 			for (
 			classParsers in url
 				.openStream()
@@ -69,14 +81,20 @@ internal object ParserCollection {
 				.readText()
 				.trim()
 				.split(lineRegex)
-				.map { classLoader.loadClass(it) }
+				.map { line ->
+					classLoader.loadClass(line).also {
+						debug("Loaded ($line) $it")
+					}
+				}
 				.filter {
 					val isVisited = !visited.contains(it)
 					if (!isVisited) visited.add(it)
+					debug("Visited $it: $isVisited")
 					isVisited
 				}
 				.map(classToParserFunctionsTransformer)
 			) {
+				debug("Adding parsers $classParsers")
 				parsers.putAll(classParsers)
 			}
 		}
