@@ -5,11 +5,10 @@ plugins {
 }
 
 group = "no.telenor.kt"
-version = versioning.environment()
 
 repositories {
 	mavenCentral()
-	git.hub("telenornorway")
+	telenor.public()
 }
 
 dependencies {
